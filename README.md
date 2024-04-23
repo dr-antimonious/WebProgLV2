@@ -1,38 +1,152 @@
-# LV 2 zadatak - JavaScript komandne aplikacije
+# Node.js shop console app
 
-Zadatak je napraviti command line JavaScript aplikaciju koja će simulirati košaricu u web stranici za trgovinu. Sučelje, specifikaciju i rad aplikacije morate dizajnirati sami. Obratite pozornost na lakoću korištenja aplikacije. Npr. možda je lakše korisniku upisati “kupi patike” nego “kupi item-125sa4134d”, ili je možda dobra značajka imati mogućnost pretrage proizvoda. 
+This is an example console app for a shop, written using [TypeScript](https://www.typescriptlang.org) for [Node.js](https://nodejs.org/en).
+An effort was made to improve user experience for users less familiar with CLIs, specifically by:
+- creating real-language commands
+- writing concise and detailed error messages
+- adding useful replies for every successfully executed command
 
-Dizajn sučelja, sigurnost (provjera greški i sl.), lakoća korištenja (dizajn sučelja, korisne greške, postoji li “help” komanda i sl.) i potpunost rješenja će se bodovati.
+Made using Node.js v21.7.3
 
-Minimalni zahtjevi su da korisnik može vidjeti popis svih artikala, vidjeti svoju košaricu, dodavati i brisati artikle iz košarice te kupiti sve odabrane proizvode (ako za to ima novaca). Svaku komandu/akciju je potrebno definirati u zasebnoj funkciji.
+## Setup
 
-U **main.js** postoji kod kojeg možete koristiti kao početnu točku za razvoj aplikacije.
-
-Nakon što je aplikacija izrađena, potrebno je napisati dokumentaciju (uređivanjem ovog README dokumenta) koja opisuje sve moguće komande, njihove argumente i što obavljaju ili vraćaju. Npr.
-
-> buy 
-> > Add an item with the specified name to the cart. Will search list of items (case insensitive) by the name. If no matching item is found, returns an error. 
-
-Osim toga, potrebno je opisati općeniti dizajn komandne aplikacije, na što ste obraćali pozornost te generalne upute kako koristiti aplikaciju. Zamislite da pišete README za javni GitHub repozitorij vaše aplikacije.
-
-## Pokretanje JavaScript komandnih aplikacija
-
-Potrebno je instalirati Node: [https://nodejs.dev/en/](https://nodejs.dev/en/)
-
-Nakon instalacije, moguće je pokretati JavaScript datoteke iz terminala:
+To set up the project, run the following commands.
 
 ```shell
-node main.js
+git clone https://github.com/dr-antimonious/WebProgLV2
+npm i
 ```
 
-## Resursi
+## Running the app
 
-Ideje o tome kako dizajnirati komandno sučelje
+To run the application, navigate to the root of the project directory in shell, and run the following command.
 
-- [https://clig.dev/#guidelines](https://clig.dev/#guidelines)
-- [https://www.makeareadme.com](https://www.makeareadme.com/)
+```shell
+npm start
+```
 
-JavaScript osnove:
+## Usage
 
-- [https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/JavaScript_basics](https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/JavaScript_basics)
-- [https://javascript.info/first-steps](https://javascript.info/first-steps)
+List of acceptable commands:
+
+- [add](#add)
+- [bag](#bag)
+- [balance](#balance)
+- [buy](#buy)
+- [cart](#cart)
+- [clear](#clear)
+- [exit/quit/leave](#exit)
+- [help](#help)
+- [remove](#remove)
+- [shelf](#shelf)
+- [topup](#topup)
+
+Any of the listed commands (except [help](#help) and [exit/quit/leave](#exit)) can be run as shown below to display the help information for that specific command.
+
+```shell
+<command> h
+```
+
+### add
+
+```shell
+add [<type> | h] [<amount>]
+```
+
+Adds items to the user's cart.
+
+#### Arguments
+
+type - Type of item to be added to cart (find available types using the [shelf](#shelf) command).
+
+amount - Amount of items of the type to be added to cart.
+
+### bag
+
+```shell
+bag [h]
+```
+
+Displays the contents of the user's bag (the items the user already purchased).
+
+### balance
+
+```shell
+balance [h]
+```
+
+Displays the current balance of the user's wallet.
+
+### buy
+
+```shell
+buy [h]
+```
+
+Allows the user to purchase the items in their cart.
+
+### cart
+
+```shell
+cart [h]
+```
+
+Displays the contents of the user's cart (the items the user intends to purchase).
+
+### clear
+
+```shell
+clear [h]
+```
+
+Removes all items from the user's cart.
+
+### exit
+
+```shell
+[exit | quit | leave]
+```
+
+Closes the app. All three commands are equivalent.
+
+### help
+
+```shell
+help
+```
+
+Displays the help information.
+
+### remove
+
+```shell
+remove [<type> | h] [<amount>]
+```
+
+Removes items from the user's cart.
+
+#### Arguments
+
+type - Type of item to be removed from cart (find available types using the [shelf](#shelf) command).
+
+amount - Amount of items of the type to be removed from cart.
+
+### shelf
+
+```shell
+shelf [h]
+```
+
+Displays the contents of the shelf (the types of items available for purchase).
+
+### topup
+
+```shell
+topup [<amount> | h]
+```
+
+Increases the balance of the user's wallet by the passed amount.
+
+#### Arguments
+
+amount - Amount of 'money' to be added to the user's wallet.

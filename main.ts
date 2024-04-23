@@ -52,7 +52,7 @@ const clearCartHelpStrings: string[] = ["command: clear",
                                         "Removes all items from your cart."];
 const removeFromCartHelpStrings: string[] = ["command: remove",
                                              "usage: remove [<type> | h] [<amount>]",
-                                             "Removes items to your cart.",
+                                             "Removes items from your cart.",
                                              "type - Type of item to be removed from cart (find available types using the 'cart' command)",
                                              "amount - Amount of items of the type to be removed from cart"];
 const viewShelfHelpStrings: string[] = ["command: shelf",
@@ -60,7 +60,8 @@ const viewShelfHelpStrings: string[] = ["command: shelf",
                                         "Displays the contents of the shelf (the types of items available for purchase)."];
 const topUpHelpStrings: string[] = ["command: topup",
                                     "usage: topup [<amount> | h]",
-                                    "Increases the balance of your wallet by the passed amount."];
+                                    "Increases the balance of your wallet by the passed amount.",
+                                    "amount - Amount of 'money' to be added to your wallet."];
 
 /**
  * Checks if an argument `arg` passed to a method that called {@link isHelpRequest} indicates a help request.
@@ -97,10 +98,10 @@ function printContents(array: ItemArray, arrName: string): void {
     let totalPrice: number = 0;
     array.forEach(item => {
         const tempPrice: number = item.price * item.amount;
-        console.log(`${`${item.amount}x ${item.name} (${item.price} each)`.padEnd(process.stdout.columns / 4, " ")} = ${tempPrice.toFixed(2).padStart(6, " ")}`);
+        console.log(`${`${item.amount}x ${item.name} (${item.price} each)`.padEnd(42, " ")} = ${tempPrice.toFixed(2).padStart(8, " ")}`);
         totalPrice += tempPrice;
     });
-    console.log(`The total price of the items in your ${arrName} is`.padEnd(process.stdout.columns / 4, " "), totalPrice.toFixed(2).padStart(8, " "));
+    console.log(`The total price of the items in your ${arrName} is`, totalPrice.toFixed(2).padStart(8, " "));
 }
 
 /**
@@ -288,6 +289,7 @@ function removeFromCart(itemName: string, amount?: number): boolean {
         else {
             cart[cartIndex].amount -= amount;
         }
+        console.log(`Removed ${amount} ${itemName} from your cart.`)
         return true;
     }
     else {
@@ -343,6 +345,7 @@ function clearCart(arg?: string): void {
         || !isValidArglessCall(arg))
         return;
 
+    console.log("Your cart is now empty.");
     cart = [];
 }
 
@@ -417,11 +420,12 @@ const functions = [addToCart, viewBag, checkBalance, buy, viewCart, clearCart,
  */
 function help(): void {
     functions.forEach(fun => {
-        console.log("-".repeat(process.stdout.columns / 2));
+        console.log("-".repeat(2 * (process.stdout.columns / 3)));
         fun("h");
     });
-    console.log("-".repeat(process.stdout.columns / 2));
+    console.log("-".repeat(2 * (process.stdout.columns / 3)));
     console.log("To access help for a specific command, execute it with the 'h' argument (eg. 'add h').");
+    console.log("To exit press CTRL+C or type 'exit', 'quit', or 'leave'.");
 }
 
 const rl: readline.Interface = readline.createInterface({
@@ -432,6 +436,7 @@ const rl: readline.Interface = readline.createInterface({
 console.log("Welcome to XYZ Store");
 console.log("To view a list of available actions, execute command 'help'.");
 console.log("To access help for a specific command, execute it with the 'h' argument (eg. 'add h').");
+console.log("To exit press CTRL+C or type 'exit', 'quit', or 'leave'.");
 
 rl.prompt();
 rl.on('line', (line: string): void => {
@@ -439,6 +444,7 @@ rl.on('line', (line: string): void => {
     const command: string = split[0];
     const args: string[] = split.slice(1);
 
+    // noinspection FallThroughInSwitchStatementJS
     switch (command) {
         case 'add':
             addToCart(args[0], Number(args[1]));
@@ -458,10 +464,12 @@ rl.on('line', (line: string): void => {
         case 'clear':
             clearCart(args[0]);
             break;
+        case 'exit':
+        case 'quit':
+        case 'leave':
+            console.log('Goodbye');
+            process.exit(0);
         case 'help':
-            help();
-            break;
-        case 'list':
             help();
             break;
         case 'remove':
